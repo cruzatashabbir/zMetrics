@@ -1,0 +1,57 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutPage_Auth.cshtml";
+}
+
+
+
+<form action="/Authentication/Login" method="post" id="loginForm">
+    <div class="panel-body">
+        <div class="mar-ver pad-btm">
+            <h1 class="h3">Account Login</h1>
+            <p>Sign In to your zeusMetrics account</p>
+        </div>
+
+        <div class="form-group">
+            <input type="text" name="username" class="form-control" placeholder="Username" autofocus>
+        </div>
+        <div class="form-group">
+            <input name="password" type="password" class="form-control" placeholder="Password">
+        </div>
+        <div class="form-group">
+            <div id="demo-error-container" class="bg-gray-light"></div>
+        </div>
+        <div class="checkbox pad-btm text-left">
+            <input id="demo-form-checkbox" class="magic-checkbox" type="checkbox">
+            <label for="demo-form-checkbox">Remember me</label>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Sign In</button>
+
+    </div>
+</form>
+<div class="panel-footer">
+    @if (ViewBag.Error_Msg != "")
+    {
+        <p style="color:red">@ViewBag.Error_Msg</p>
+    }    
+</div>
+<div class="pad-all">
+    <a href="@Url.RouteUrl("forgotpassword")" class="btn-link mar-rgt">Forgot password ?</a>
+    <a href="@Url.RouteUrl("registration")" class="btn-link mar-lft">Create a new account</a>
+
+    @*<div class="media pad-top bord-top">
+        <div class="pull-right">
+            <a href="#" class="pad-rgt"><i class="demo-psi-facebook icon-lg text-primary"></i></a>
+            <a href="#" class="pad-rgt"><i class="demo-psi-twitter icon-lg text-info"></i></a>
+            <a href="#" class="pad-rgt"><i class="demo-psi-google-plus icon-lg text-danger"></i></a>
+        </div>
+        <div class="media-body text-left text-bold text-main">
+            Login with
+        </div>
+    </div>*@
+</div>
+
+
+<script>
+
+</script>
