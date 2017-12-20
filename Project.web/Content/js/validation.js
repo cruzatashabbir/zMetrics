@@ -147,4 +147,44 @@ $(document).ready(function(){
             }
         }
     });
+
+    $('#fpForm').bootstrapValidator({
+        message: 'This value is not valid',
+        excluded: [':disabled'],
+        //feedbackIcons: faIcon,
+        fields: {
+            Email: {
+                container: '#demo-error-container',
+                message: 'The username is not valid',
+                validators: {
+                    notEmpty: {
+                        message: 'The username is required and cannot be empty'
+                    },
+                    emailAddress: {
+                        message: 'The input is not a valid email address'
+                    }                   
+                    
+                }
+            }          
+        }
+    }).on('status.field.bv', function (e, data) {
+        var $form = $(e.target),
+        validator = data.bv,
+        $tabPane = data.element.parents('.tab-pane'),
+        tabId = $tabPane.attr('id');
+
+        if (tabId) {
+            var $icon = $('a[href="#' + tabId + '"][data-toggle="tab"]').parent().find('i');
+            // Add custom class to tab containing the field
+            if (data.status == validator.STATUS_INVALID) {
+                $icon.removeClass(faIcon.valid).addClass(faIcon.invalid);
+            } else if (data.status == validator.STATUS_VALID) {
+                var isValidTab = validator.isValidContainer($tabPane);
+                $icon.removeClass(faIcon.valid).addClass(isValidTab ? faIcon.valid : faIcon.invalid);
+            }
+        }
+    });
 });
+
+
+

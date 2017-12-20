@@ -80,11 +80,44 @@ namespace BAL.User
             return results;
         }
 
-       
+        public ForgotPasswordResponse resetPassword(string Email)
+        {
+            objResponse Response = new objResponse();
+            ForgotPasswordResponse results = new ForgotPasswordResponse();
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("http://zmetricsapi.cruzata.com/auth/resetpassword");
+
+                    //HTTP POST                   
+                    var postTask = client.PostAsJsonAsync<string>("resetpassword", Email);
+                    postTask.Wait();
+
+                    var result = postTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var readTask = result.Content.ReadAsAsync<ForgotPasswordResponse>();
+                        readTask.Wait();
+
+                        results = readTask.Result;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                results.header.ErrorMessage = ex.Message.ToString();
+                BAL.Common.LogManager.LogError("validate User", 1, Convert.ToString(ex.Source), Convert.ToString(ex.Message), Convert.ToString(ex.StackTrace));
+            }
+
+            return results;
+        }
 
 
-        
 
-       
+
+
+
+
     }
 }

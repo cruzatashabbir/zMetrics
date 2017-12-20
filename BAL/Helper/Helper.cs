@@ -213,8 +213,18 @@ namespace BAL.Helper
             return returnValue;
           }
 
+         public static string FirstLetterToUpper(string str)
+        {
+            if (str == null)
+                return null;
 
-          public static Boolean SendEmail(string emailid, string subject, string message)
+            if (str.Length > 1)
+                return char.ToUpper(str[0]) + str.Substring(1);
+
+            return str.ToUpper();
+        }
+
+        public static Boolean SendEmail(string emailid, string subject, string message)
           {
               try
               {
@@ -271,71 +281,19 @@ namespace BAL.Helper
               }
           }
 
-          public static Boolean SendEmailUsingGoDaddy(string emailid, string subject, string body)
-          {
-              MailMessage message = new MailMessage();
-              SmtpClient smtpClient = new SmtpClient();
-              string msg = string.Empty;
-              try
-              {
-                  MailAddress fromAddress = new MailAddress("dev@cruzata.com");
-                  message.From = fromAddress;
-                  message.To.Add(emailid);
-                  message.Subject = subject;
-                  message.IsBodyHtml = true;
-                  message.Body = body;
-                  message.Priority = MailPriority.High;
-                  smtpClient.Host = "relay-hosting.secureserver.net";   //-- Donot change.
-                  smtpClient.Port = 25; //--- Donot change
-                  smtpClient.EnableSsl = false;//--- Donot change
-                  smtpClient.UseDefaultCredentials = true;
-                  
-                 // smtpClient.Credentials = new System.Net.NetworkCredential("dev@cruzata.com", "Abhishek1234");
+         public static string PopulateBody(string Name, string templatePath)
+        {
+            string body = string.Empty;
+            using (StreamReader reader = new StreamReader(templatePath))
+            {
+                body = reader.ReadToEnd();
+            }
+            body = body.Replace("{Name}", Name);
+           
+            return body;
+        }
 
-                  smtpClient.Send(message);
- 
-                  return true;
-              }
-              catch (Exception ex)
-              {
-                  BAL.Common.LogManager.LogError("SendEmailUsingGoDaddy", 1, Convert.ToString(ex.Source), Convert.ToString(ex.Message), Convert.ToString(ex.StackTrace));
-                  return false;
-              }
-          }
-
-          public static Boolean SendEmailUsingGoDaddy(MailMessage message)
-          {
-              //MailMessage message = new MailMessage();
-              SmtpClient smtpClient = new SmtpClient();
-              string msg = string.Empty;
-              try
-              {
-                  MailAddress fromAddress = new MailAddress("dev@cruzata.com");
-                  message.From = fromAddress;
-                 // message.To.Add(emailid);
-                //  message.Subject = subject;
-                  message.IsBodyHtml = true;
-                //  message.Body = body;
-                  message.Priority = MailPriority.High;
-                  smtpClient.Host = "relay-hosting.secureserver.net";   //-- Donot change.
-                  smtpClient.Port = 25; //--- Donot change
-                  smtpClient.EnableSsl = false;//--- Donot change
-                  smtpClient.UseDefaultCredentials = true;
-
-                  // smtpClient.Credentials = new System.Net.NetworkCredential("dev@cruzata.com", "Abhishek1234");
-
-                  smtpClient.Send(message);
-
-                  return true;
-              }
-              catch (Exception ex)
-              {
-                  BAL.Common.LogManager.LogError("SendEmailUsingGoDaddy", 1, Convert.ToString(ex.Source), Convert.ToString(ex.Message), Convert.ToString(ex.StackTrace));
-                  return false;
-              }
-          }
-
-          public static DateTime ConvertFromUnixTimestamp(double timestamp)
+        public static DateTime ConvertFromUnixTimestamp(double timestamp)
           {
               var origin = new DateTime(1970, 1, 1, 0, 0, 0, 0);
               return origin.AddSeconds(timestamp);
